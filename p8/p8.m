@@ -9,7 +9,7 @@ function p8
     %% Second configuration
 %     measurements = {'red', 'green', 'green'};      % Observation
 %     motions = [1, 1, 1];                     % Motions   
-%     %% Third configuration
+     %% Third configuration
 %     measurements = {'green', 'red'};
 %     motions = [1, 1];
     %% Fourth configuration
