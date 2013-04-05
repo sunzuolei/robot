@@ -8,12 +8,12 @@ end
 disp(p);
 
 %% The optional methods that are fairly expensive for Matlab
-n = 10;
-p = [ ];
-for i = 1 : n
-    p = [p, 1/n];
-end
-disp(p);
+% n = 10;
+% p = [ ];
+% for i = 1 : n
+%     p = [p, 1/n];
+% end
+% disp(p);
 
 
 n = 10;

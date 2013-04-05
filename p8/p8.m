@@ -33,12 +33,14 @@ function p8
     for i = 1 : length(measurements)
         %% Update by sensing
         p = sense(p, measurements(i), world, pHit, pMiss); 
-        entropy(1,i) = sum(p .* log(p) );  
+        entropy(1,i) = -sum(p .* log2(p) );  
         %% Predict by moving
         p = move(p, motions(i), pExact, pOvershoot, pUndershoot);
-        entropy(2,i) = sum(p .* log(p) );    
+        entropy(2,i) = -sum(p .* log2(p) );    
     end
+    disp('The final posterior:')
     disp(p)
+    disp('The final entropy:')
     disp(entropy(end, end)); % Show the final distribution's entropy
     %% Show the posterior
     h1 = figure(1);
@@ -51,7 +53,7 @@ function p8
     hMaxBar = bar(pMax, 'hist');
     set(hMaxBar,'FaceColor','r');
     xlabel('Index of cell');
-    ylabel('Posterior probability');
+    ylabel('Posterior');
     print(h1, '-dpng', 'posterior.png');
     %% Show the entropy
     h2 = figure(2);
@@ -61,7 +63,7 @@ function p8
     xlim([0, length(motions)+1]);
     xlabel('Step');
     ylabel('Entropy');
-    legend('After sensing', 'After moving but before sensing', 'Location', 'NorthWest');
+    legend('After sensing', 'Before sensing', 'Location', 'Best');
     print(h2, '-dpng', 'entropy.png');
 end
 

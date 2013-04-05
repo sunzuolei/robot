@@ -10,7 +10,7 @@ function p7
     entropy = zeros(1, step);
     for i = 1 : step
         p = move(p, u, pExact, pOvershoot, pUndershoot);
-        entropy(i) = sum(p .* log(p) );        
+        entropy(i) = -sum(p .* log2(p) );        
         disp(i);
         disp(p);
     end  
@@ -18,7 +18,7 @@ function p7
     hold on;    
     plot(1:step, entropy, '-', 'linewidth', 2,   'color', 'g');
     plot(1:step, entropy, '^', 'linewidth', 1.5, 'color', 'r');
-    xlabel('Step');
+    xlabel('Motion step');
     ylabel('Entropy');
     print(h, '-dpng', 'entropy.png');
 end
