@@ -2,9 +2,11 @@
 function p4
     clc; clear all; close all;
     p = [1/9, 1/3, 1/3, 1/9, 1/9];    
-    u = 1;          % Control
+    u = -1;          % Control
     q = move(p, u); % Motion model
+    disp('Before motion:');
     disp(p);
+    disp('After motion:');
     disp(q);
 end
 %%

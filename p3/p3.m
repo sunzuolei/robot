@@ -11,8 +11,8 @@ function p3
         p3plot;
         p = q;
     end
-%     disp(p);
-%     p3plot;
+    disp(p);
+    p3plot;
 end
 
 %% 

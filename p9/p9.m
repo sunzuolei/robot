@@ -25,7 +25,6 @@ function p9
 %     motions = {up};
     %% Motion propagation
     q = move(p, cell2mat(motions(1)), pMoveCorrect);
-    %% Calculate entropy
     
     %% Disp information
     disp('The Prior:');

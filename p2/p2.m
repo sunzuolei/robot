@@ -22,15 +22,15 @@ function q = sense(p, z, world, pHit, pMiss)
 end
 
 %% The optional implementation of function sense
-% function q = sense(p, z, world, pHit, pMiss)
-%     q = zeros(size(p));
-%     for i = 1:length(p)
-%         hit = strcmp(z, world(i));
-%         if hit
-%             q(i) = p(i) * pHit;
-%         else
-%             q(i) = p(i) * pMiss;
-%         end
-%     end
-%      q = q / sum(q); 
-% end
+function q = sense(p, z, world, pHit, pMiss)
+    q = zeros(size(p));
+    for i = 1:length(p)
+        hit = strcmp(z, world(i));
+        if hit
+            q(i) = p(i) * pHit;
+        else
+            q(i) = p(i) * pMiss;
+        end
+    end
+     q = q / sum(q); 
+end
