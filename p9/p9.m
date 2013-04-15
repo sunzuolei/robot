@@ -16,7 +16,7 @@ function p9
     pMoveCorrect = 0.8;
 
     pStart = 0.7;
-    p = (1 - pStart) / (nRow * nCol) * ones(nRow, nCol);        % Prior
+    p = (1 - pStart) / (nRow * nCol - 1) * ones(nRow, nCol);        % Prior
     %% Fisrt configuration
     p(3, 2) = pStart; 
     motions = {right};

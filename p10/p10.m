@@ -8,7 +8,7 @@ function p10
     nRow = size(world, 1);
     nCol = size(world, 2);
     pStart = 0.7;
-    p = (1 - pStart) / (nRow * nCol) * ones(nRow, nCol);        % Prior
+    p = (1 - pStart) / (nRow * nCol - 1) * ones(nRow, nCol);        % Prior
     
     pSenseCorrect = 0.7;
     %%
