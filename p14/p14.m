@@ -1,0 +1,10 @@
+close all; clear all; clc;
+path(path,genpath('../p13'));
+a = 2;
+b = 4;
+x = [7, 38, 4, 23, 18];
+y = a*x + b;
+xmu = compMean(x);
+ymu = compMean(y);
+fprintf('a * Xmu + b \t= %.2f \n', a * xmu + b);
+fprintf('Ymu \t\t= %.2f \n', ymu);
