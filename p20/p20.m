@@ -1,87 +1,51 @@
 close all; clc; clear all;
-path(path, genpath('../p18'));
-path(path, genpath('../p11'));
-x = -2 : 0.02 : 10;
-y = x;
-%% Prior
-[priorMat, xMat, yMat] ...
-    = gaussian2d([5, 6], makeSigma(0.6, 0.9, 0.7), x, y);
-%% Motion model
-motMat = gaussian2d([3, 2], makeSigma(0.4, 0.7, 0.3), x, y);
-%% Observation model
-obsMat = gaussian2d([6, 4], makeSigma(0.6, 0.5, 0.5), x, y);
+path(path, genpath('../p17'));
+path(path, genpath('../p19'));
 
-%% Prediction
-predMat = convolute2d(priorMat, motMat, x, y);
-%% Update
-postMat = product2d(predMat, obsMat, x, y);
+x  = -100:0.001:100; 
+
+prior         = gaussian1d(2, 1, x); % a Gaussian Prior of mean 2 and SD 1
+motionModel   = gaussian1d(1, 2, x);    % a Gaussian motion model of mean 1 and SD 2
+sensorModel   = gaussian1d(5, 1, x);    % a Gaussian observation model of mean 5 and SD 1
+
+probAfterMove  = convolute1d(motionModel, prior, x);      % prediction is convolution
+probAfterSense = product1d(sensorModel, probAfterMove, x); % update is multiplication
 %%
-figure('Name', 'Prediction')
-hold on;
-mesh(xMat, yMat, priorMat);
-text(5, 6, max(max(priorMat)), 'Prior', 'fontweight','b');
-mesh(xMat, yMat, motMat);
-text(3, 2, max(max(motMat)), 'Motion model', 'fontweight','b');
-mesh(xMat, yMat,predMat);
-[r, c] = maxMat(predMat);
-text(xMat(r,c), yMat(r,c), predMat(r, c), 'Predicted', 'fontweight','b');
-xlabel('x');
-ylabel('y');
-zlabel('Probability');
-xlim([min(x), max(x)]);
-ylim([min(y), max(y)]);
-view(3)
-grid on;
-print('-dpng', 'prediction.png');
-%% 
-figure('Name', 'Prediction contour')
-hold on;
-contour(xMat, yMat, priorMat);
-text(5, 6, 'Prior', 'fontweight','b');
-contour(xMat, yMat, motMat);
-text(3, 2, 'Motion model', 'fontweight','b');
-contour(xMat, yMat,predMat);
-[r, c] = maxMat(predMat);
-text(xMat(r,c), yMat(r,c), 'Predicted', 'fontweight','b');
-xlabel('x');
-ylabel('y');
-xlim([min(x), max(x)]);
-ylim([min(y), max(y)]);
-grid minor;
-print('-dpng', 'predictioncontour.png');
+[muAfterMove, sdAfterMove]   = convolute1dParam(2, 1, 1, 2);
+[muAfterSense, sdAfterSense] = product1dParam(...
+                                muAfterMove, sdAfterMove, 5, 1);
+
+probAfterMoveParam  = gaussian1d(muAfterMove, sdAfterMove, x);
+probAfterSenseParam = gaussian1d(muAfterSense, sdAfterSense, x);
+
 %%
-figure('Name', 'Update')
+probAfterSenseParamSeq = product1d(sensorModel, probAfterMoveParam, x); 
+%%
+h = figure('name','Bayes filtering');
+set(h, 'position', get(0,'ScreenSize'));
+subplot(2, 1, 1);
 hold on;
-mesh(xMat, yMat,predMat);
-[r, c] = maxMat(predMat);
-text(xMat(r,c), yMat(r,c), predMat(r, c), 'Predicted', 'fontweight','b');
-mesh(xMat, yMat,obsMat);
-text(6, 4, max(max(obsMat)), 'Observation model', 'fontweight','b');
-mesh(xMat, yMat,postMat);
-[r, c] = maxMat(postMat);
-text(xMat(r,c), yMat(r,c), postMat(r, c), 'Updated', 'fontweight','b');
-xlabel('x');
-ylabel('y');
-zlabel('Probability');
-xlim([min(x), max(x)]);
-ylim([min(y), max(y)]);
-view(3)
-grid on;
-print('-dpng', 'update.png');
-%% 
-figure('Name', 'Update contour')
-hold on;
-contour(xMat, yMat,predMat);
-[r, c] = maxMat(predMat);
-text(xMat(r,c), yMat(r,c), 'Predicted', 'fontweight','b');
-contour(xMat, yMat,obsMat);
-text(6, 4, max(max(obsMat)), 'Observation model', 'fontweight','b');
-contour(xMat, yMat,postMat);
-[r, c] = maxMat(postMat);
-text(xMat(r,c), yMat(r,c),  'Updated', 'fontweight','b');
-xlabel('x');
-ylabel('y');
-xlim([min(x), max(x)]);
-ylim([min(y), max(y)]);
+box on;
 grid minor;
-print('-dpng', 'updatecontour.png');
+plot(x, probAfterMove, 'r-', 'linewidth', 6);
+plot(x, probAfterMoveParam, 'g:', 'linewidth', 3);
+legend('Predicted prob', sprintf('Predicted prob \n with params'));
+title('Bayes filtering (Prediction)')
+ylabel('Probability');
+ylim([0, 0.2]);
+xlim([-5, 10]);
+
+subplot(2, 1, 2);
+hold on;
+box on;
+grid minor;
+title('Update')
+plot(x, probAfterSense, 'k-', 'linewidth', 6);
+plot(x, probAfterSenseParam, 'c-', 'linewidth', 2);
+plot(x, probAfterSenseParamSeq, 'y-', 'linewidth', 2);
+legend('Posterior', 'Posterior with params as input and output',...
+    'Posterior with params as input', 'Location', 'NorthWest');
+ylabel('Probability');
+ylim([0, 0.5]);
+xlim([-5, 10]);
+print('-dpng', 'bayesfilterwithparams.png');

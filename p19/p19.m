@@ -3,9 +3,9 @@ path(path, genpath('../p17'));
 
 x  = -10:0.01:10; 
 
-prior         = gaussian1d(2, 1, x); % a Gaussian Prior of mean 2 and variance 1
-motionModel   = gaussian1d(1, 2, x);    % a Gaussian motion model of mean 1 and variance 2
-sensorModel   = gaussian1d(5, 1, x);    % a Gaussian observation model of mean 5 and variance 1
+prior         = gaussian1d(2, 1, x); % a Gaussian Prior of mean 2 and SD 1
+motionModel   = gaussian1d(1, 2, x);    % a Gaussian motion model of mean 1 and SD 2
+sensorModel   = gaussian1d(5, 1, x);    % a Gaussian observation model of mean 5 and SD 1
 
 probAfterMove  = convolute1d(motionModel, prior, x);      % prediction is convolution
 probAfterSense = product1d(sensorModel, probAfterMove, x); % update is multiplication
