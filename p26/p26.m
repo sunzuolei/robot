@@ -9,7 +9,7 @@ len = size(relMotion, 2);
 %% Initialize vedio maker
 videoObj           = VideoWriter('robot.avi');
 videoObj.FrameRate = 5;
-videoObj.Quality   = 100;
+videoObj.Quality   = 50;
 open(videoObj);
 %% Initialize figure
 figPos    = get(0, 'ScreenSize'); % [left, bottom, width, height]
