@@ -7,7 +7,7 @@ function [muPred, SigmaPred] = predictLKF(mu, Sigma, F, Q, varargin)
     if mod(argLen, 2) ~= 0 || argLen > 6
         error('Wrong number of arguments.');
     end
-    if nargin < 2
+    if nargin < 4
         error('Not enough input arguments.');
     end
     if size(mu, 2) ~= 1
