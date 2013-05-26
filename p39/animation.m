@@ -15,7 +15,7 @@ axis(1.1 * [min(xTrue(1, :))-0.5  max(xTrue(1, :))...
       min(xTrue(3, :))-0.5  max(xTrue(3, :))]);
 
 for i = 1 : step
-    if i == 1 || mod(i, 5) == 0
+    if i == 1 || mod(i, 1) == 0
         SigmaPostNow   = SigmaPost(:,:,i);
         SigmaPostNowXy = SigmaPostNow([1,3], [1,3]);
         threeSigma     = getSigmaEllipse(muPost([1,3], i),...
