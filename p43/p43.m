@@ -3,6 +3,9 @@ path(path, '../p39');
 p39;
 close all;
 width = 1;
+%%
+noiseState = sprintf('proNoiseScalar = %.1f, obsNoiseScalar = %.1f',...
+   proNoiseScalar, obsNoiseScalar);
 %% Innovation and innovation SD
 s = 1 : step;
 sigmaYx = sqrt(reshape(SigmaInnov(1,1,s),1,[]));
@@ -25,7 +28,7 @@ ylim(max(sigmaYx(s(idx))) * 7 * [-1, +1]);
 hLeg = legend('Y_{x}', '1-\sigma', '2-\sigma', '3-\sigma');
 set(hLeg, 'location', 'south', 'orientation', 'horizontal');
 ylabel('(m)');
-title('Innoviation and its SD in x');
+title({noiseState,'Innoviation and its SD in x'});
 %
 subplot(2, 1, 2)
 h = plot(s, innov(2, s), 'b-',...
@@ -41,9 +44,9 @@ ylim(max(sigmaYx(s(idx))) * 10 * [-1, +1]);
 hLeg = legend('Y_{y}', '1-\sigma ', '2-\sigma', '3-\sigma');
 set(hLeg, 'location', 'south', 'orientation', 'horizontal');
 ylabel('(m)');
-title('Innoviation and its SD in y');
+title({noiseState,'Innoviation and its SD in y'});
 print('-dpng', 'innovandsigma.png');
-%% Normalized innovation
+%% Normalized innovation 
 s = 1 : step;
 [normY, meanY, chiUp, chiLow] ...
     = chiSquareTest(innov, SigmaInnov, 'movingAverage');
@@ -51,12 +54,14 @@ s = 1 : step;
 figure('Name', 'Innovation analysis',...
     'units','normalized', 'outerposition',[0 0 1 1]);
 hold on; box on;
-h = plot(time, normY, 'g-', time, meanY, 'r-',...
-         time, chiUp, 'b-', time, chiLow, 'b-');
+h = plot(s, normY, 'g-', s, meanY, 'r-',...
+         s, chiUp, 'b-', s, chiLow, 'b-');
 set(h, 'linewidth', width);
-legend('Normalised innovations','Mean of the normalised innovations',...
+legend('Normalised innovations squared',...
+'Mean of the normalised innovations',...
     '95% Confidence bounds');
-title('Normalised Innovations and Innovation Confidence Interval');
+title({noiseState,...
+    'Normalised Innovations and Innovation Confidence Interval'});
 xlim([min(s), max(s)]);
 ylabel('Normalised innovations');
 print('-dpng', 'innovationchitest.png');
@@ -68,12 +73,13 @@ s = 1 : step;
 figure('Name', 'Consistency check using ture state',...
     'units','normalized', 'outerposition',[0 0 1 1]);
 hold on; box on;
-h = plot(time, p, 'g-', time, meanP, 'r-',...
-         time, chiUp, 'b-', time, chiLow, 'b-');
+h = plot(s, p, 'g-', s, meanP, 'r-',...
+         s, chiUp, 'b-', s, chiLow, 'b-');
 set(h, 'linewidth', width);
 legend('Normalised state estimation error square','Mean',...
     '95% Confidence bounds');
-title('Normalised State Estimation Error Square and Confidence Interval');
+title({noiseState, ...
+    'Normalised State Estimation Error Square and Confidence Interval'});
 xlim([min(s), max(s)]);
 ylabel('Normalised State Estimation Error Square');
 print('-dpng', 'normlisedstateerror.png');
