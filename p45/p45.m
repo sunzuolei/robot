@@ -7,9 +7,9 @@ rng(123); % Control random number generation
 %%
 enableVis    = false;
 %%
-step         = 45;
+step         = 300;
 stEdge       = 10;
-v            = 1;
+v            = 3;
 dt           = 1;
 xInit        = [0, 0, 0, 0]';
 SigmaInit    = 1^2 * eye(4);
@@ -18,12 +18,12 @@ xLen         = length(xInit);
 proNoiseScalar = 1.0;
 obsNoiseScalar = 1.0;
 %% Process noise sigma
-sigmaCxNoise = 0.01;
-sigmaCyNoise = 0.01;
+sigmaCxNoise = 0.1;
+sigmaCyNoise = 0.1;
 Q  = (proNoiseScalar * [sigmaCxNoise, 0;  0, sigmaCyNoise]).^2;
 %% Measurement noise sigma
-sigmaXNoise  = 0.01;
-sigmaYNoise  = 0.01; 
+sigmaXNoise  = 0.3;
+sigmaYNoise  = 0.3; 
 R  = (obsNoiseScalar * diag([sigmaXNoise, sigmaYNoise])).^2;
 %% Noise for simulating truths
 % NOTE: the simQ and simR can be different from Q and R!!
@@ -38,10 +38,10 @@ B = [0,  0;
      1,  0;
      0,  0;
      0,  1];
-E = [dt^2/2,  0;
-     dt,   0;
-     0,   dt^2/2;
-     0,   dt];
+E = [dt,  0;
+     1,   0;
+     0,   dt;
+     0,   1];
 H = [1, 0, 0, 0;
      0, 0, 1, 0];
 

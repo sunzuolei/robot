@@ -1,5 +1,5 @@
 path(path, '../p45');
-path(path, '../p43');
+% path(path, '../p43');
 p45;
 close all;
 width = 1;
@@ -12,8 +12,9 @@ sigmaYx = sqrt(reshape(SigmaInnov(1,1,s),1,[]));
 sigmaYy = sqrt(reshape(SigmaInnov(2,2,s),1,[]));
 figure('Name', 'Innovation and innovation SD',...
     'units','normalized', 'outerposition',[0 0 1 1])
-hold on; box on; grid minor;
+hold on; box on; 
 subplot(2, 1, 1)
+grid minor;
 h = plot(s, innov(1, s), 'b-',...
          s, sigmaYx, 'r-',...
          s, 2 * sigmaYx, 'c-',...
@@ -31,6 +32,7 @@ ylabel('(m)');
 title({noiseState,'Innoviation and its SD in x'});
 %
 subplot(2, 1, 2)
+grid minor;
 h = plot(s, innov(2, s), 'b-',...
          s, sigmaYy, 'r-',...
          s, 2 * sigmaYy, 'c-',...
@@ -46,7 +48,7 @@ set(hLeg, 'location', 'south', 'orientation', 'horizontal');
 ylabel('(m)');
 title({noiseState,'Innoviation and its SD in y'});
 print('-dpng', 'innovandsigma.png');
-%% Normalized innovation 
+%% Normalized innovation squared
 s = 1 : step;
 [normY, meanY, chiUp, chiLow] ...
     = chiSquareTest(innov, SigmaInnov, 'movingAverage');
@@ -54,6 +56,7 @@ s = 1 : step;
 figure('Name', 'Innovation analysis',...
     'units','normalized', 'outerposition',[0 0 1 1]);
 hold on; box on;
+grid minor;
 h = plot(s, normY, 'g-', s, meanY, 'r-',...
          s, chiUp, 'b-', s, chiLow, 'b-');
 set(h, 'linewidth', width);
@@ -73,6 +76,7 @@ s = 1 : step;
 figure('Name', 'Consistency check using ture state',...
     'units','normalized', 'outerposition',[0 0 1 1]);
 hold on; box on;
+grid minor;
 h = plot(s, p, 'g-', s, meanP, 'r-',...
          s, chiUp, 'b-', s, chiLow, 'b-');
 set(h, 'linewidth', width);
