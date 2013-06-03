@@ -25,4 +25,4 @@ simR =  diag([sigmaXNoise,  sigmaYNoise].^2);
 %% Main loop of the LKF implemented in a separated script
 mainLoop;
 %% The animation is implemented in a separated script
-% animation
+animation
