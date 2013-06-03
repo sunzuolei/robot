@@ -4,10 +4,10 @@ path(path, '../p44');
 rng('default');
 rng(123); % Control random number generation
 
-enableVis    = 1;
+enableVis    = 0;
 squareMot    = 0;
 %%
-step         = 1000;
+step         = 100;
 stEdge       = 10;
 v            = 6;
 dt           = 1;

@@ -1,6 +1,7 @@
-% Show state correlation.
-path(path, '../p39');
-p39;
+%%
+path(path, '../p49');
+path(path, '../p43');
+p49;
 close all;
 width = 1;
 %%
