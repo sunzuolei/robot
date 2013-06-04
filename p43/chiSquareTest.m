@@ -17,7 +17,7 @@ function [q, qMean, chiUp, chiLow] = chiSquareTest(Y, S, type)
 %       chiLow  - The low bound...
     
     if nargin < 3
-        type = 'bunch';
+        type = 'batch';
     end
         
     [r, c]      = size(Y);

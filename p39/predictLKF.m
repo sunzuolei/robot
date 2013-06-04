@@ -1,6 +1,6 @@
 function [muPred, SigmaPred] = predictLKF(mu, Sigma, F, Q, varargin)
  
-    %% Verify the dimentions
+    %% Verify the dimensions
     muLen  = size(mu, 1);
     argLen = nargin - 4;
 

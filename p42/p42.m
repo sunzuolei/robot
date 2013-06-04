@@ -1,9 +1,9 @@
-% Show state correlation.
+% Show state correlation. 
 path(path, '../p39');
 p39;
 close all;
 width = 1;
-%%
+%% The following are exactly same as p42.
 sigmaXXPred    = reshape(SigmaPred(1,1,:),1,[]);
 sigmaVxVxPred  = reshape(SigmaPred(2,2,:),1,[]);
 sigmaYYPred    = reshape(SigmaPred(3,3,:),1,[]);
