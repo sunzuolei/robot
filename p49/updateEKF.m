@@ -1,5 +1,13 @@
 function [muPost, SigmaPost, Y, S, K] = updateEKF(mu, Sigma,...
-    sensorModel, sensorPos, z, H, R)
+    sensorModel, sensorPos, z, H, R, hasAngle, idxAngle)
+%%
+    if nargin < 8
+        hasAngle = false;
+    end
+    
+    if nargin == 8
+        idxAngle = length(z);
+    end
 %%
     r = size(mu, 1);
     if r ~= size(Sigma, 1) || r ~= size(Sigma, 2)
@@ -15,6 +23,9 @@ function [muPost, SigmaPost, Y, S, K] = updateEKF(mu, Sigma,...
     end
 %%
     Y         = z - sensorModel(mu, sensorPos);
+    if hasAngle
+       Y(idxAngle) = piTopi(Y(idxAngle)); 
+    end
     S         = H * Sigma * H' + R;
     K         = Sigma * H' / S;
     muPost    = mu + K * Y;

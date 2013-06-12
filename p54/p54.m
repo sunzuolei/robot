@@ -1,5 +1,6 @@
 %% Simulate the nonlinear motion and observation.
 close all; clear all; clc;
+path(path, '../p34'); % For calling piTopi
 path(path, genpath('../p22'));
 path(path, '../p49');
 rng(853); % Control random number generation
@@ -9,27 +10,30 @@ makeVideo = 1;
 %%
 load '../data/rose.mat'
 clear laser;
-relMotion = relMotion(:, 530:2250); % Only use a part of the data.
-step      = size(relMotion, 2);
-disp(mean(relMotion, 2));
-rob = [0 -3 -3; 0 -1 1] * 0.2;
+relMotion = relMotion(:, 250:6:2400) * 10; % Only use a part of the data.
+% relMotion = relMotion(:, 1 : 300);
+step      = size(relMotion, 2);   
+meanRel   = mean(abs(relMotion), 2);% 2250
+meanRel(3)= radtodeg(meanRel(3));
+disp(meanRel);
+rob = [0 -3 -3; 0 -1 1] * 0.3;
 %%
 xInit        = [0, 0, 0]';
-SigmaInit    = diag([0.1, 0.1, degtorad(0.1)].^2);
+SigmaInit    = diag([0.1, 0.1, degtorad(0.01)].^2);
 xLen         = length(xInit);
 %%
-sensorPos    = [-9, 14];
+sensorPos    = [1.5, 3];
 %% Tune noises
 proNoiseScalar = 1.0;
 obsNoiseScalar = 1.0;
 %% Process noise sigma
-sigmaXNoise    = 0.01;
-sigmaYNoise    = 0.01;
-sigmaThetaNoise = degtorad(0.1);
+sigmaXNoise    = 0.001;
+sigmaYNoise    = 0.001;
+sigmaThetaNoise = degtorad(0.001);
 Q  = diag(proNoiseScalar * ...
     [sigmaXNoise, sigmaXNoise, sigmaXNoise]).^2;
 %% Measurement noise sigma
-sigmaBNoise  = degtorad(0.2);
+sigmaBNoise  = degtorad(0.001);
 R  = (obsNoiseScalar * sigmaBNoise).^2;
 %% Noise for simulating truths
 % NOTE: the simQ and simR can be different from Q and R!!
@@ -65,7 +69,7 @@ for i = 1 : step
     H = p54.jacobH(mu, sensorPos);
     [mu, Sigma, innov(:,i), SigmaInnov(:,:,i)] =...
         updateEKF(mu, Sigma, @p54.sensorModel, sensorPos,...
-        zTrue(:,i), H, R);
+        zTrue(:,i), H, R, true);
     muPost(:,i)      = mu;
     SigmaPost(:,:,i) = Sigma;
 end

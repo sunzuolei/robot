@@ -1,30 +1,31 @@
 clear all; clc; close all;
+path(path, '../p34'); % For calling piTopi
 path(path, '../p39');
 path(path, '../p44');
 rng('default');
 rng(123); % Control random number generation
 
 enableVis    = 0;
-squareMot    = 0;
+squareMot    = 1;
 %%
-step         = 100;
-stEdge       = 10;
+step         = 500;
+stEdge       = 30;
 v            = 6;
 dt           = 1;
 xInit        = [0, 0, 0, 0]';
 SigmaInit    = 0.5^2 * eye(4);
 xLen         = length(xInit);
 %%
-sensorPos    = [250, 500];
+sensorPos    = [80, 60];
 %% Tune noises
 proNoiseScalar = 1.0;
 obsNoiseScalar = 1.0;
 %% Process noise sigma
-sigmaCxNoise = 0.02;
-sigmaCyNoise = 0.02;
+sigmaCxNoise = 0.024;
+sigmaCyNoise = 0.024;
 Q  = (proNoiseScalar * [sigmaCxNoise, 0;  0, sigmaCyNoise]).^2;
 %% Measurement noise sigma
-sigmaBNoise  = degtorad(0.09);
+sigmaBNoise  = degtorad(0.98);
 R  = (obsNoiseScalar * sigmaBNoise).^2;
 %% Noise for simulating truths
 % NOTE: the simQ and simR can be different from Q and R!!
@@ -77,7 +78,7 @@ for i = 1 : step
     H = p49.jacobH(mu, sensorPos);
     [mu, Sigma, innov(:,i), SigmaInnov(:,:,i)] =...
         updateEKF(mu, Sigma, @p49.sensorModel, sensorPos,...
-        zTrue(:,i), H, R);
+        zTrue(:,i), H, R, true, 1);
     muPost(:,i)      = mu;
     SigmaPost(:,:,i) = Sigma;
 end
