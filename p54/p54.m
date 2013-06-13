@@ -1,7 +1,7 @@
-%% Simulate the nonlinear motion and observation.
+%% The EKF demo with nolinear motion and sensor models.
 close all; clear all; clc;
-path(path, '../p34'); % For calling piTopi
-path(path, genpath('../p22'));
+path(path, '../p34');           % For calling piTopi
+path(path, genpath('../p22'));  % For calling compound
 path(path, '../p49');
 rng(853); % Control random number generation
 %%
