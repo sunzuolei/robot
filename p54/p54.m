@@ -60,7 +60,7 @@ tic;
 for i = 1 : step
     if i ~= 1
         u = relMotion(:, i-1);
-        F = p54.jacobH(mu, u);
+        F = p54.jacobF(mu, u);
         [mu, Sigma] = predictEKF(mu, Sigma, u,...
         @p54.motionModel, F, Q);
         muPred(:,i)      = mu;
