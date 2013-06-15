@@ -8,7 +8,7 @@ function w = compWeight(zPred, zTrue, Sigma, hasAngle, idxAngle)
        error('zPred and zTrue should be of same size!'); 
     end
 
-    if size(zPred, 1) ~= size(Sigma, 1) || size(zTrue, 2) ~= size(Sigma, 2)
+    if size(zPred, 1) ~= size(Sigma, 1) 
         error('The wrong size of Sigma!');
     end
     

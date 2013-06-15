@@ -3,6 +3,7 @@ close all; clear all; clc;
 path(path, '../p34');           % For calling piTopi
 path(path, genpath('../p22'));  % For calling compound
 path(path, '../p49');
+path(path, genpath('../p54'));  % For calling models and simtruth
 rng(853); % Control random number generation
 %%
 enableVis = 0;
@@ -10,7 +11,7 @@ makeVideo = 0;
 %%
 load '../data/rose.mat'
 clear laser;
-relMotion = relMotion(:, 250:6:2400) * 10; % Only use a part of the data.
+relMotion = relMotion(:, 250:5:2400) * 7; % Only use a part of the data.
 % relMotion = relMotion(:, 1 : 300);
 step      = size(relMotion, 2);   
 meanRel   = mean(abs(relMotion), 2);% 2250
@@ -27,22 +28,23 @@ sensorPos    = [1.5, 3];
 proNoiseScalar = 1.0;
 obsNoiseScalar = 1.0;
 %% Process noise sigma
-sigmaXNoise    = 0.001;
-sigmaYNoise    = 0.001;
-sigmaThetaNoise = degtorad(0.001);
+sigmaXNoise    = 0.01;
+sigmaYNoise    = 0.01;
+sigmaThetaNoise = degtorad(0.01);
 Q  = diag(proNoiseScalar * ...
     [sigmaXNoise, sigmaXNoise, sigmaXNoise]).^2;
 %% Measurement noise sigma
-sigmaBNoise  = degtorad(0.001);
-R  = (obsNoiseScalar * sigmaBNoise).^2;
+sigmaBNoise  = degtorad(0.1);
+sigmaRNoise  = 0.1;
+R  = diag(obsNoiseScalar * [sigmaBNoise, sigmaRNoise]).^2;
 %% Noise for simulating truths
 % NOTE: the simQ and simR can be different from Q and R!!
 simQ =  diag([sigmaXNoise, sigmaXNoise, sigmaXNoise]).^2;
-simR =  sigmaBNoise^2;
+simR =  diag([sigmaBNoise, sigmaRNoise]).^2;
 %%
 [xTrue, zTrue] = p54.simTruth(xInit, @p54.motionModel, relMotion, simQ,...
-    @p54.sensorModel, sensorPos, simR, step);
-%%
+    @p57.sensorModel, sensorPos, simR, step);
+
 %% Assign memory
 muPred           = zeros(xLen, step);
 muPred(:,1)      = xInit;
@@ -66,25 +68,25 @@ for i = 1 : step
         muPred(:,i)      = mu;
         SigmaPred(:,:,i) = Sigma;
     end
-    H = p54.jacobH(mu, sensorPos);
+    H = p57.jacobH(mu, sensorPos);
     [mu, Sigma, innov(:,i), SigmaInnov(:,:,i)] =...
-        updateEKF(mu, Sigma, @p54.sensorModel, sensorPos,...
-        zTrue(:,i), H, R, true);
+        updateEKF(mu, Sigma, @p57.sensorModel, sensorPos,...
+        zTrue(:,i), H, R, true, 1);
     muPost(:,i)      = mu;
     SigmaPost(:,:,i) = Sigma;
 end
 toc;
 %%
 if enableVis 
-    h = p54.initFigure(xTrue, muPost, sensorPos);
+    h = p57.initFigure(xTrue, muPost, sensorPos);
     if makeVideo
-        videoObj           = VideoWriter('fullynonlinearekf.avi');
+        videoObj           = VideoWriter('bearingrangeekfdemo.avi');
         videoObj.FrameRate = 5;
         videoObj.Quality   = 50;
         open(videoObj);
     end
     for i = 1 : step
-            [xEnd,yEnd] = pol2cart(zTrue(i),10000);
+            [xEnd,yEnd] = pol2cart(zTrue(1, i),zTrue(2, i));
             set(h.trueObs, 'xdata', [sensorPos(1),xEnd + sensorPos(1)],...
                            'ydata', [sensorPos(2),yEnd + sensorPos(2)]);
             set(h.truePat, 'xdata', xTrue(1, 1:i), 'ydata', xTrue(2, 1:i));

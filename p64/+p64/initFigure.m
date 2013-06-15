@@ -14,7 +14,7 @@ function h = initFigure( xTrue, xPost, sensorPos )
     % =========== end ===========
     h.postPat = plot (0, 0, 'color',[0, 100,  0]/255, ...
         'linestyle', '-', 'linewidth',1.8,'erasemode','normal'); 
-    h.trueObs = plot (0, 0, 'g:','linewidth', 4, 'erasemode','normal');
+    h.trueObs = plot (0, 0, 'r-','linewidth', 4, 'erasemode','normal');
     h.sensor  = plot (sensorPos(1),sensorPos(2),'mo',...
         'markersize',15,'linewidth',2, 'MarkerFaceColor','y');   
     h.trueRob = patch(0, 0, 'y', 'linewidth',2, 'erasemode', 'normal');
@@ -22,7 +22,7 @@ function h = initFigure( xTrue, xPost, sensorPos )
     
     h.legend  = legend('True Path', 'True Rob',...
         'Filtered Rob', 'Filtered Path',...
-        'True Bearing-only Obs', 'Sensor');
+        'True Bearing & Range Obs', 'Sensor');
     set(h.legend ,'box','off','location','NorthWestOutside',...
         'orientation','vertical','fontsize',15);
     axis square ;
@@ -49,7 +49,7 @@ function h = initFigure( xTrue, xPost, sensorPos )
         'erasemode', 'normal');
     h.eye.postPat = plot (0, 0, 'color',[0, 100,  0]/255, ...
         'linestyle', '-', 'linewidth',1.8,'erasemode','normal'); 
-    h.eye.trueObs = plot (0, 0, 'g:','linewidth', 4, 'erasemode','normal');
+    h.eye.trueObs = plot (0, 0, 'r-','linewidth', 4, 'erasemode','normal');
     h.eye.sensor  = plot (sensorPos(1),sensorPos(2),'mo',...
         'markersize',15,'linewidth',2, 'MarkerFaceColor','y');   
     h.eye.trueRob = patch(0, 0, 'y', 'linewidth', 2, 'erasemode', 'normal');
