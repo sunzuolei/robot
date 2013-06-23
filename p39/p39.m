@@ -2,6 +2,8 @@ clear all; clc; close all;
 path(path, '../p16');
 rng(123); % Control random number generation
 %%
+visualize    = 0;
+%%
 dt           = 1;
 step         = 100;
 xInit        = [0, 4, 0, 2]';
@@ -25,4 +27,6 @@ simR =  diag([sigmaXNoise,  sigmaYNoise].^2);
 %% Main loop of the LKF implemented in a separated script
 mainLoop;
 %% The animation is implemented in a separated script
-% animation
+if visualize
+    animation
+end

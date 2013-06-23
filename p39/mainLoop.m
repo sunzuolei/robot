@@ -21,20 +21,25 @@ SigmaPost        = zeros(xLen, xLen, step);
 zRows            = size(zTrue, 1);
 innov            = zeros(zRows, step);
 SigmaInnov       = zeros(zRows, zRows, step);
+timePredLKF      = zeros(1, step);
+timeUpdateLKF    = zeros(1, step);
 
 %% Filtering loop
 mu               = xInit;
 Sigma            = SigmaInit;
-tic;
+
 for i = 1 : step
     if i ~= 1
+        predStart = tic;
         [mu, Sigma] = predictLKF(mu, Sigma, F, Q, 'processNoiseMat', E);
+        timePredLKF(i) = toc(predStart);
         muPred(:,i)      = mu;
         SigmaPred(:,:,i) = Sigma;
     end
+    updateStart = tic;
     [mu, Sigma, innov(:,i), SigmaInnov(:,:,i)] =...
         updateLKF(mu, Sigma, zTrue(:,i), H, R);
+    timeUpdateLKF(i) = toc(updateStart);
     muPost(:,i)      = mu;
     SigmaPost(:,:,i) = Sigma;
 end
-toc;
