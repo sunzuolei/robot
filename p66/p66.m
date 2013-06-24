@@ -70,11 +70,11 @@ for i = 1 : step
     end
     updateStart = tic;
     [xi, Omega] = updateLIF(xi, Omega, zTrue(:,i), H, R);
-    timeUpdateLIF(i) = toc(updateStart);
-    xiPost(:,i)      = xi;
-    OmegaPost(:,:,i) = Omega;
     %% State recovery
     muPost(:,i)      = Omega \ xi;
+    timeUpdateLIF(i) = toc(updateStart);
+    xiPost(:,i)      = xi;
+    OmegaPost(:,:,i) = Omega;    
 end
 
 %% The animation is implemented in a separated script
