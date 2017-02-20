@@ -7,7 +7,7 @@ rob = [0 -3 -3; 0 -1 1] * 0.5;
 %%
 load '../data/rose.mat'
 maxR  = 7.9; 
-vedio = 1;
+vedio = 0;
 n     = 3;
 len   = size(relMotion, 2);
 %% Initialize vedio maker

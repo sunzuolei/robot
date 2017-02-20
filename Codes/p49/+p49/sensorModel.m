@@ -3,6 +3,6 @@ function z = sensorModel(x, sensorPos)
 %     if (x(1) - sensorPos(1)) < 0
 %         z = piTopi( z + pi);
 %     end
-      z = atan2( x(2)-sensorPos(2), x(1)-sensorPos(1) );
+      z = atan2( x(3)-sensorPos(2), x(1)-sensorPos(1) );
 end
 

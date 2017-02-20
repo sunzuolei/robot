@@ -18,7 +18,7 @@ function p6
         title(['step = ', int2str(i)]);
         colormap spring ;
 %         print(h, '-depsc2', ['./Figs/step', int2str(i), '.eps']);
-        print(h, '-dpng', ['./Figs/step', int2str(i), '.png']);
+%         print(h, '-dpng', ['./Figs/step', int2str(i), '.png']);
         pause(0.2);
     end    
 end

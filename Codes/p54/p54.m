@@ -5,7 +5,7 @@ path(path, genpath('../p22'));  % For calling compound
 path(path, '../p49');
 rng(853); % Control random number generation
 %%
-enableVis = 0;
+enableVis = 1;
 makeVideo = 0;
 %%
 load '../data/rose.mat'

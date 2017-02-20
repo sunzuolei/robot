@@ -1,4 +1,4 @@
-clc; clear all; close all;
+clc; clear; close all;
 
 Xwa = [5; 3; degtorad(50)];
 Xab = [4; 2; degtorad(20)];

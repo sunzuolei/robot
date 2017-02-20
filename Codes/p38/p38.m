@@ -9,8 +9,8 @@ x         = [0, 0.5, 0, 0.4]';
 sigmaVx   = 0.2;
 sigmaVy   = 0.1;
 %%
-sigmaZx   = 0.8;
-sigmaZy   = 0.6;
+sigmaZx   = 0.1;
+sigmaZy   = 0.1;
 %%
 F = [1, dt,  0,  0;
      0,  1,  0,  0;

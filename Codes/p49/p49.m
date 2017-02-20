@@ -18,8 +18,8 @@ xLen         = length(xInit);
 %%
 sensorPos    = [80, 60];
 %% Tune noises
-proNoiseScalar = 1.0;
-obsNoiseScalar = 1.0;
+proNoiseScalar = 0.3;
+obsNoiseScalar = 0.3;
 %% Process noise sigma
 sigmaCxNoise = 0.024;
 sigmaCyNoise = 0.024;

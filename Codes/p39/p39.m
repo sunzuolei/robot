@@ -2,7 +2,7 @@ clear all; clc; close all;
 path(path, '../p16');
 rng(123); % Control random number generation
 %%
-visualize    = 0;
+visualize    = 1;
 %%
 dt           = 1;
 step         = 100;

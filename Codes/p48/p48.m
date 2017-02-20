@@ -5,4 +5,5 @@ h = atan((y - ys) / (x - xs));
 X = [x, vx, y, vy];
 H = jacobian(h, X);
 disp(H);
-simplify(H)
+H2 = simplify(H)
+pretty(H2);

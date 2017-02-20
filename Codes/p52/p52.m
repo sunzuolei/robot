@@ -14,3 +14,4 @@ h = atan((y - ys) / (x - xs));
 H = jacobian(h, X);
 disp(H);
 simplify(H)
+pretty(H);

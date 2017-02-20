@@ -1,7 +1,7 @@
 close all; clc; clear all;
 mu      = [0, 0];
-sigmax  = 3;
-sigmay  = 5;
+sigmax  = 5;
+sigmay  = 7;
 rho     = 0.2;
 sigmaxy = sigmax * sigmay * rho;
 Sigma   = [sigmax^2,   sigmaxy;

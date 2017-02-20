@@ -6,8 +6,8 @@ rng(555);
 dt        = 0.1;
 step      = 100;
 x         = [0, 0.5, 0, 0.4]';
-sigmaVx   = 0.01;
-sigmaVy   = 0.01;
+sigmaVx   = 0.05;
+sigmaVy   = 0.05;
 xAll      = zeros(length(x), step);
 xAll(:,1) = x;
 %%
