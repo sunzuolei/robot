@@ -1,9 +1,12 @@
 #include<iostream.h>
 #include<math.h>
 #include <string>
+using  std::string;
+
+
 double temp[4][5];
 double temp1[5][6];
-using  std::string;
+
 
 double compEntropy(double a[][5])           //熵
 {
@@ -15,7 +18,7 @@ double compEntropy(double a[][5])           //熵
   return sum;
 }
 
-void output(double a[][5],int nRow,int nCol)     //矩阵输出
+void output(double a[][5],int nRow,int nCol)     //matrix output
 {
   for(int i = 0;i < nRow;i++)
   {
@@ -26,7 +29,7 @@ void output(double a[][5],int nRow,int nCol)     //矩阵输出
 }
 
 
-double max(double q[][5],int &m,int &n)      //打印最大值和下标
+double max(double q[][5],int &m,int &n)      //print maximum valie and index
 {
 	double maxv = 0;
 	for(int i = 0;i < 4;i++)
@@ -43,7 +46,7 @@ double max(double q[][5],int &m,int &n)      //打印最大值和下标
 	return maxv;
 }
 
-void move(double q[][5],int nRow,int nCol,int u[][2],int k)     //move函数
+void move(double q[][5],int nRow,int nCol,int u[][2],int k)     //move function
 {
   int m,n;
   for(int i = 1;i < (nRow + 1);i++)
@@ -58,7 +61,7 @@ void move(double q[][5],int nRow,int nCol,int u[][2],int k)     //move函数
 			n = (j-1-u[k][1]) + 10;
 		else
 			n = abs(j-1-u[k][1]);
-       temp1[i][j] = 0.8*q[m % 4 ][n % 5 ]+0.2* q[i-1][j-1];  //取模
+       temp1[i][j] = 0.8*q[m % 4 ][n % 5 ]+0.2* q[i-1][j-1];  //mod 
 		
 	}
   for(int ii = 0;ii < 4;ii++)
@@ -68,7 +71,7 @@ void move(double q[][5],int nRow,int nCol,int u[][2],int k)     //move函数
 		
 }
 
-void sense(double q[][5],string z,string world1[][5])     //sense函数
+void sense(double q[][5],string z,string world1[][5])     //sense function
 {
   int hit;
   for(int i = 0;i < 4;i++)
@@ -107,13 +110,13 @@ void  main()
 		for(int j = 0;j<nCol;j++)
 		p[i][j] = (double)1/(nRow*nCol);
 
-	for(int ii=0;ii<2;ii++)
-	  for(int j=0;j<eCol;j++)
-		entropy[ii][j] = 0;
+//	for(int ii=0;ii<2;ii++)
+//	  for(int j=0;j<eCol;j++)
+//		entropy[ii][j] = 0;
 
-	for(int k=0;k<eCol;k++)
+	for(int k=0;k<eCol;k++)                 //The main loop
 	  {
-		move(p,nRow,nCol,motions,k);     	//计算move
+		move(p,nRow,nCol,motions,k);     	//Compute move
 		for(int i=0;i<nRow;i++)
 		  for(int j=0;j<nCol;j++)
 			{
@@ -121,30 +124,32 @@ void  main()
 			  p0[i][j] = p[i][j];
 			}
 
-	sense(p,measurements[i], world);   //计算sense
-	for(int ii=0;ii<nRow;ii++)         
+		sense(p,measurements[i], world);   //Compute sense
+		for(int ii=0;ii<nRow;ii++)         
             for(int j=0;j<nCol;j++)
-		{
-		p[ii][j] = temp[ii][j];
-		sum1+= p[ii][j];
-		}
+				{
+					p[ii][j] = temp[ii][j];
+					sum1+= p[ii][j];
+				}
 	
-	for(int i1=0;i1<nRow;i1++)
+		for(int i1=0;i1<nRow;i1++)
             for(int j=0;j<nCol;j++)
 				p[i1][j] = (double)p[i1][j]/sum1; 
-	sum1 = 0;
+		sum1 = 0;
        
- //   entropy[0][i]=compEntropy(p0);
- //   entropy[1][i]=compEntropy(p);
+		entropy[0][k]=compEntropy(p0);
+		entropy[1][k]=compEntropy(p);
 
 
-	 cout<<"step"<<k<<"The probability before sensing:"<<endl;
-	 output(p0,nRow,nCol);
-	 cout<<"step"<<k<<"The probability after sensing:"<<endl;
-	 output(p,nRow,nCol);
+		 cout<<"step"<<k<<"The probability before sensing:"<<endl;
+		 output(p0,nRow,nCol);
+		 cout<<"step"<<k<<"The probability after sensing:"<<endl;
+		 output(p,nRow,nCol);
 	}
 	maxV=max(p,r_index,c_index);
 	cout<<"The largest probability "<<maxV<<" occurs at cell"<<"["<<r_index<<"]["<<c_index<<"]"<<endl;
+	cout<<"The change of entropy:"<<endl;
+	output(entropy,2,5);
 
 
 }
