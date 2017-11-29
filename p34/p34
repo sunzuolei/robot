@@ -1,0 +1,82 @@
+from __future__ import division
+import matplotlib.pyplot as plt
+from numpy import *
+import math
+
+def compSteer(x,wp,iWp,G,dt):
+	maxG  = 30*math.pi/180
+	rateG = 20*math.pi/180
+	minD  = 0.5
+	cwp   = wp[:,iWp-1]
+	d2    = (cwp[0]-x[0])**2 + (cwp[1]-x[1])**2
+	if d2 < minD**2:
+		iWp += 1
+		if iWp > len(wp[0]):
+			iWp = 0
+			return G,iWp
+		cwp = wp[:,iWp-1]
+	deltaG = piTopi(math.atan2((cwp[1]-x[1]),(cwp[0]-x[0]))-x[2]-G)
+	maxDelta = rateG*dt
+	if abs(deltaG) > maxDelta:
+		deltaG = sign(deltaG)*maxDelta
+	G = G+deltaG
+	if abs(G) > maxG:
+		G = sign(G)*maxG
+	return G,iWp
+
+def piTopi(angle):
+    twopi = 2*math.pi
+    angle = angle - twopi*fix(angle/twopi)
+    for i in range(len(angle)):
+		if angle[i] >= math.pi:
+			angle[i] = angle[i] - twopi
+		if angle[i] < -math.pi:
+			angle[i] = angle[i] + twopi
+    return angle
+
+def compound(Xwa,Xab):
+    Xwb = array(zeros([3,3]))
+    Xab2 = Xab[0:2,:]
+    Xwb2 = Xwb[0:2,:]
+    rot = array([[math.cos(Xwa[2]),-math.sin(Xwa[2])],[math.sin(Xwa[2]),math.cos(Xwa[2])]])
+    Xwb2 = dot(rot ,Xab2) + tile(Xwa[0:2], (1, len(Xab[0,:])))
+    if len(Xab[:,0]) == 3:
+        Xwb[2] = piTopi(Xwa[2] + Xab[2])
+    Xwb[0] = Xwb2[0]
+    Xwb[1] = Xwb2[1]
+    return Xwb
+
+steering  = 0
+velocity  = 8.0
+wheelbase = 8
+dt        = 0.05
+ipos      = 0
+iWp       = 1
+rob       = array([[0,-wheelbase,-wheelbase],[0,-4,4]])
+RP=array([[0,-wheelbase,-wheelbase,0],[0,-4,4,0]])
+wp = array([[10,-10,-50,-10,10,30,70,30,10],[-40,0,20,40,80,40,20,0,-40]])
+
+plt.figure()
+plt.xlabel('X(m)')
+plt.ylabel('Y(m)')
+ax        = plt.axes(xlim=(-100,100),ylim=(-100,100))
+ax.plot(wp[0],wp[1],'*b--')
+robplot, =ax.plot(RP[0],RP[1],'b')
+pos       = zeros([3,1])
+path      = zeros([3,3390])
+
+while iWp != 0:
+    steering,iWp = compSteer(pos, wp, iWp, steering, dt)
+    pos[0] = pos[0] + velocity * dt * cos(steering + pos[2,:])
+    pos[1] = pos[1] + velocity * dt * sin(steering + pos[2,:])
+    pos[2] = pos[2] + velocity * dt * sin(steering) / wheelbase
+    pos[2] = piTopi(pos[2])
+    robPos = compound(pos,rob)
+    path[:,ipos+1]=pos[:,0]
+    ipos+=1
+    ax.plot(path[0,0:ipos],path[1,0:ipos],'r')
+    b=robPos[0:2,0:1]
+    a=robPos[0:2]
+    c=hstack((a,b))
+    robplot.set_data(c[0],c[1])
+    plt.pause(0.00001)
