@@ -2,4 +2,4 @@ The codes and slides for the first year graduate student course, the Fundamental
 
 ## 学生更新记录：
 
-- 霍煜豪 邮箱：591144810@qq.com 学号：201730310153。刚开始学python，改的比较慢到目前才改了16个，而且改的比较烂。。
+- 姓名：罗响   学号：201730310128   邮箱：834943826@qq.com   改了P1、P4、P5、P10、P12、P13、P14这7个matlab例子为C++。
